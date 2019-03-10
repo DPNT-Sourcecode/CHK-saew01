@@ -26,19 +26,22 @@ public class CheckoutSolution {
     }
 
     public Integer checkout(String skus) {
+        Integer total = 0;
 
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
             //Do multi pricing bit here, will keep simple for now
             //Do normal pricing first
-            itemsInBasket.entrySet().for
+            for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
+                Item itemInfo = pricingTable.get(itemInBasket.getKey());
+                total += itemInfo.getPrice() * itemInBasket.getValue();
+            }
+            return total;
         } catch(IllegalArgumentException e) {
             //Return -1 for unknown skus
             return -1;
         }
-
-
     }
 
     private  Map<String, Integer> calculateItemsRequested(String skus) {
@@ -59,6 +62,7 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
 
