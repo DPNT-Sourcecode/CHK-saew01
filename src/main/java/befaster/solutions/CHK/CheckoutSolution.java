@@ -10,6 +10,7 @@ import java.util.Optional;
 public class CheckoutSolution {
 
    private final Map<String, Item> pricingTable;
+   private final List<String> multibuys;
 
     public CheckoutSolution() {
         pricingTable = PricingData.createItems();
@@ -120,3 +121,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+

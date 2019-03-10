@@ -9,7 +9,7 @@ public class Item {
     private final String sku;
     private final Integer price;
 
-    public Item(String sku, Integer price, List<Multibuy> multibuys) {
+    public Item(String sku, Integer price) {
         this.sku = sku;
         this.price = price;
     }
@@ -22,4 +22,5 @@ public class Item {
         return price;
     }
 }
+
 

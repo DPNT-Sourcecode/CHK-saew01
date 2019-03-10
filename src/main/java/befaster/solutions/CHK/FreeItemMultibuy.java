@@ -5,8 +5,8 @@ import java.util.List;
 public class FreeItemMultibuy extends Multibuy{
     private final String sku;
 
-    public FreeItemMultibuy(List<String> skuItemsForMultibuy, Integer count, String sku) {
-        super(skuItemsForMultibuy, count);
+    public FreeItemMultibuy(Integer count, String sku) {
+        super(count);
         this.sku = sku;
     }
 
@@ -16,4 +16,5 @@ public class FreeItemMultibuy extends Multibuy{
 
 
 }
+
 
