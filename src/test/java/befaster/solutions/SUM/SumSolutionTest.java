@@ -16,7 +16,18 @@ public class SumSolutionTest {
     }
 
     @Test
-    public void compute_sum() {
+    public void compute_correctlyAddsTwoValidValues() {
         assertThat(sum.compute(1, 1), equalTo(2));
     }
+
+    @Test()
+    public void compute_throwsIllegalArgumentExceptionIfNegative() {
+        sum.compute(-1, 20);
+    }
+
+    @Test
+    public void compute_throwsIllegalArgumentExceptionIfOver100() {
+
+    }
 }
+
