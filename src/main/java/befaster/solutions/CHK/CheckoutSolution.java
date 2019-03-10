@@ -73,7 +73,9 @@ public class CheckoutSolution {
             while(requestedItems >= multibuy.getCount()) {
                 requestedItems -= multibuy.getCount();
                 Integer currentValueInBasket = itemsInBasket.get(multibuy.getSku());
-                itemsInBasket.put(multibuy.getSku(), currentValueInBasket - 1);
+                if(itemsInBasket.containsKey(multibuy.getSku())) {
+                    itemsInBasket.put(multibuy.getSku(), currentValueInBasket - 1);
+                }
             }
         }
 
@@ -129,3 +131,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
