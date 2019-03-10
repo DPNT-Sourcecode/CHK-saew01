@@ -55,6 +55,9 @@ public class CheckoutSolution {
     {
         Map<String, Integer> itemTracker = new HashMap<>();
         if(sku.length() == 1) {
+            if(!pricingTable.containsKey(sku)) {
+                throw new IllegalArgumentException(String.format("Unexpected sku %s", sku));
+            }
             itemTracker.put(sku, 1);
 
         }
@@ -83,6 +86,7 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
 
