@@ -2,10 +2,7 @@ package befaster.solutions.CHK;
 
 import com.google.common.collect.Lists;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CheckoutSolution {
@@ -25,8 +22,8 @@ public class CheckoutSolution {
 
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
-
-            Integer total = applyMultibuys(itemsInBasket);
+            Integer total = applyGroupMultibuy(itemsInBasket);
+            total += applyMultibuys(itemsInBasket);
 
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
@@ -46,23 +43,56 @@ public class CheckoutSolution {
 
         for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
             Item itemInfo = pricingTable.get(itemInBasket.getKey());
-            Optional<Multibuy> applicableMultibuy = multibuys.stream()
-                    .filter(multibuy -> multibuy.getSkusForMultibuy().contains(itemInfo.getSku())
-                        && multibuy.getSkusForMultibuy().size() > 1)
+            Optional<PriceReductionMultibuy> applicableMultibuy = multibuys.stream()
+                    .filter(multibuy -> multibuy instanceof PriceReductionMultibuy
+                            && multibuy.getSkusForMultibuy().contains(itemInfo.getSku())
+                            && multibuy.getSkusForMultibuy().size() > 1)
+                    .map(multibuy -> (PriceReductionMultibuy) multibuy)
                     .findFirst();
+
             if(applicableMultibuy.isPresent())
             {
-                total = checkGroupMultibuy(itemInBasket, applicableMultibuy, itemsInBasket);
+                total = checkGroupMultibuy(applicableMultibuy.get(), itemsInBasket);
             }
         }
         return total;
     }
 
-    private Integer checkGroupMultibuy(Map.Entry<String, Integer> itemInBasket, Multibuy applicableMultibuys, Map<String, Integer> itemsInBasket) {
+    private Integer checkGroupMultibuy(PriceReductionMultibuy applicableMultibuy, Map<String, Integer> itemsInBasket) {
 
-        List<Item> items = itemsInBasket.entrySet().stream()
-                .filter(entry -> applicableMultibuys.getSkusForMultibuy().contains(entry.getKey())).map
-                .collect(Collectors.toList())
+       List<Item> items =  itemsInBasket.entrySet().stream()
+                .filter(entry -> applicableMultibuy.getSkusForMultibuy().contains(entry.getKey()))
+                .map(entry -> this.pricingTable.get(entry.getKey()))
+                .sorted((o1, o2) -> {
+                            if (o1.getPrice().equals(o2.getPrice())) {
+                                return 0;
+                            } else if (o1.getPrice() > o2.getPrice()) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
+                        }
+                )
+                .collect(Collectors.toList());
+
+       Integer numberOfRequestedItems = items.size();
+       Integer total = 0;
+       while(numberOfRequestedItems >= applicableMultibuy.getCount()) {
+           //find x most expensive items
+           final List<Item> expensiveItems = Lists.newArrayList();
+           for (Integer i = 0; i < applicableMultibuy.getCount(); i++) {
+                   expensiveItems.add(items.remove(0));
+           }
+
+           total += applicableMultibuy.getPrice();
+           for (Item expensiveItem : expensiveItems) {
+               Integer numberInBasket = itemsInBasket.get(expensiveItem.getSku());
+               itemsInBasket.put(expensiveItem.getSku(), numberInBasket -1);
+           }
+           numberOfRequestedItems = items.size();
+       }
+
+       return total;
 
     }
 
@@ -153,4 +183,5 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
