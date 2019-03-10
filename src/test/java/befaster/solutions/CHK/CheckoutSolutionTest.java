@@ -16,4 +16,3 @@ public class CheckoutSolutionTest {
         this.checkoutSolution.
     }
 }
-

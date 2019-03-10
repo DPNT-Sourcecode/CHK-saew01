@@ -13,4 +13,3 @@ public class HelloSolutionTest {
         Assert.assertEquals("Hello, something!", actual);
     }
 }
-
