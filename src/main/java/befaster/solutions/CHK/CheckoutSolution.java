@@ -27,9 +27,21 @@ public class CheckoutSolution {
 
     public Integer checkout(String skus) {
 
-        skus.split(",")
+        Map<String, Integer> itemTracker = new HashMap<>();
+        String[] skuArray = skus.split(",");
+        for (String sku : skuArray) {
+            if(!pricingTable.containsKey(sku)) {
+                return -1;
+            }
+
+            if(itemTracker.containsKey(sku)) {
+                Integer currentCount = itemTracker.get(sku);
+                itemTracker.
+            }
+        }
 
     }
 }
+
 
 
