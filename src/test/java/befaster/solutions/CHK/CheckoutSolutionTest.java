@@ -20,8 +20,8 @@ public class CheckoutSolutionTest {
 
     @Test
     public void checkout_shouldCalculateBasketCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("A,B,C");
-        Assert.assertEquals(Integer.valueOf(100), actual);
+        Integer actual = this.checkoutSolution.checkout("A,B,C,D");
+        Assert.assertEquals(Integer.valueOf(115), actual);
     }
 
     @Test
@@ -30,4 +30,5 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(130), actual);
     }
 }
+
 
