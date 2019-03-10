@@ -27,13 +27,13 @@ public class PricingData {
         itemList.put("I", new Item("I", 35, null));
         itemList.put("J", new Item("J", 60, null));
         itemList.put("K", new Item("K", 80,
-                Lists.newArrayList(new PriceReductionMultibuy(2, 80))));
+                Lists.newArrayList(new PriceReductionMultibuy(2, 150))));
         itemList.put("L", new Item("L", 90, null));
         itemList.put("M", new Item("M", 15, null));
         itemList.put("N", new Item("N", 20,
                 Lists.newArrayList(new FreeItemMultibuy(3, "M"))));
         itemList.put("O", new Item("O", 10, null));
-        itemList.put("P", new Item("P", 50,  
+        itemList.put("P", new Item("P", 50,
                 Lists.newArrayList(new PriceReductionMultibuy(5, 200))));
         itemList.put("Q", new Item("Q", 30,
                 Lists.newArrayList(new PriceReductionMultibuy(3, 80))));
@@ -54,4 +54,5 @@ public class PricingData {
         return itemList;
     }
 }
+
 

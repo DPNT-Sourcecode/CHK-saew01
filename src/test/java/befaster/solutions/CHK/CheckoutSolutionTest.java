@@ -76,7 +76,7 @@ public class CheckoutSolutionTest {
     @Test
     public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
 
-        //TestNG style dataprovider
+        //TestNG style dataprovider, but not quite. Not familiar with way to do in junit
         Object[][] dataProvider = new Object[][] {
                 new Object[]{"AAAAAAA", 300}, //7 As
                 new Object[]{"AAAAAAAA", 330}, //8 As
@@ -85,15 +85,23 @@ public class CheckoutSolutionTest {
                 new Object[]{"FFF", 20},
                 new Object[]{"FFFF", 30},
                 new Object[]{"FFFFF", 40},
-                new Object[]{"FFFFFF", 40}
+                new Object[]{"FFFFFF", 40},
+                new Object[]{"HHHHH", 45},
+                new Object[]{"HHHHHHHHHH", 80},
+                new Object[]{"KK", 150},
+                new Object[]{"PPPPP", 200},
+                new Object[]{"QQQ", 80},
+                new Object[]{"UUUU", 120},
+                new Object[]{"VV", 90},
+                new Object[]{"VVV", 130},
         };
+
         for (Object[] input : dataProvider) {
             String skus = (String)input[0];
             Integer expected = (Integer)input[1];
             Integer actual = this.checkoutSolution.checkout(skus);
             Assert.assertEquals(String.format("Input %s did not recieve expected value", skus) ,expected, actual);
         }
-
     }
 
     @Test
@@ -120,3 +128,4 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(190), actual);
     }
 }
+
