@@ -75,4 +75,3 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
-
