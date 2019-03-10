@@ -42,6 +42,3 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(110), actual);
     }
 }
-
-
-
