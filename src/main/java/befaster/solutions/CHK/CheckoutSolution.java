@@ -30,7 +30,6 @@ public class CheckoutSolution {
     }
 
     public Integer checkout(String skus) {
-        Integer total = 0;
         if(skus.length() == 0) {
             return 0;
         }
@@ -38,7 +37,7 @@ public class CheckoutSolution {
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
-            total = applyMultibuys(itemsInBasket);
+            Integer total = applyMultibuys(itemsInBasket);
 
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
@@ -71,7 +70,7 @@ public class CheckoutSolution {
 
         if(itemInfo.getMultibuys().get(0) instanceof  FreeItemMultibuy) {
             FreeItemMultibuy multibuy =  (FreeItemMultibuy)itemInfo.getMultibuys().get(0);
-            while(multibuy.getCount() >= requestedItems) {
+            while(requestedItems >= multibuy.getCount()) {
                 requestedItems -= multibuy.getCount();
                 Integer currentValueInBasket = itemsInBasket.get(multibuy.getSku());
                 itemsInBasket.put(multibuy.getSku(), currentValueInBasket - 1);
@@ -88,6 +87,7 @@ public class CheckoutSolution {
                 getBestApplicablePriceMultibuy(multibuysToCheck, requestedItems);
         while(priceReductionMultibuy.isPresent()) {
             requestedItems -= priceReductionMultibuy.get().getCount();
+            itemInBasket.setValue(requestedItems);
             total += priceReductionMultibuy.get().getPrice();
             priceReductionMultibuy = getBestApplicablePriceMultibuy(multibuysToCheck, requestedItems);
         }
@@ -97,7 +97,8 @@ public class CheckoutSolution {
     private Optional<PriceReductionMultibuy> getBestApplicablePriceMultibuy(List<Multibuy> multibuyList, Integer requestedNumber) {
         Optional<PriceReductionMultibuy> bestMultibuy = Optional.empty();
         for (Multibuy multibuy : multibuyList) {
-            if( requestedNumber >= multibuy.getCount() && (!bestMultibuy.isPresent()
+            if(multibuy instanceof PriceReductionMultibuy &&
+                    requestedNumber >= multibuy.getCount() && (!bestMultibuy.isPresent()
                     || bestMultibuy.get().getCount() < multibuy.getCount())) {
                 bestMultibuy = Optional.of((PriceReductionMultibuy) multibuy);
             }
@@ -128,8 +129,3 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
-
-
-
-
-
