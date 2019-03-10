@@ -10,6 +10,7 @@ public class HelloSolutionTest {
     @Test
     public void hello_returnsExpected() {
         String actual = helloSolution.hello("something");
-        Assert.assertEquals("Hello, World!", actual);
+        Assert.assertEquals("Hello, something!", actual);
     }
 }
+
