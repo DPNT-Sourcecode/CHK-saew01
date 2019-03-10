@@ -1,5 +1,7 @@
 package befaster.solutions.CHK;
 
+import com.google.common.collect.Lists;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +15,8 @@ public class CheckoutSolution {
 
     private Map<String, Item> createItems() {
         Map<String, Item> itemList = new HashMap<>();
-        itemList.put("A", new Item("A", 50, new Multibuy(3, 130)));
-        itemList.put("B", new Item("B", 30, new Multibuy(2, 45)));
+        itemList.put("A", new Item("A", 50, Lists.newArrayList(new Multibuy(3, 130))));
+        itemList.put("B", new Item("B", 30, Lists.newArrayList(new Multibuy(2, 45))));
         itemList.put("C", new Item("C", 20, null));
         itemList.put("D", new Item("D", 15, null));
         return itemList;
@@ -33,10 +35,10 @@ public class CheckoutSolution {
                 Integer numberOfItemsRequested = itemInBasket.getValue();
                 if(isMultibuyApplicable(itemInfo, numberOfItemsRequested))
                 {
-                    Integer multiBuyThreshold = itemInfo.getMultibuy().getCount();
+                    Integer multiBuyThreshold = itemInfo.getMultibuys().getCount();
                     Integer numberOfMultibuys = numberOfItemsRequested / multiBuyThreshold;
                     Integer remainderFromMultibuys = numberOfItemsRequested % multiBuyThreshold;
-                    total += itemInfo.getMultibuy().getPrice() * numberOfMultibuys;
+                    total += itemInfo.getMultibuys().getPrice() * numberOfMultibuys;
                     total += itemInfo.getPrice() * remainderFromMultibuys;
                 } else {
                     total += itemInfo.getPrice() * numberOfItemsRequested;
@@ -50,7 +52,9 @@ public class CheckoutSolution {
     }
 
     private boolean isMultibuyApplicable(Item itemInfo, Integer numberOfItemsRequested) {
-        return itemInfo.getMultibuy() != null && numberOfItemsRequested >= itemInfo.getMultibuy().getCount();
+
+        return itemInfo.getMultibuys().size() > 0
+                && numberOfItemsRequested >= itemInfo.getMultibuys();
     }
 
     private Map<String, Integer> calculateItemsRequested(String skus) {
@@ -71,3 +75,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+

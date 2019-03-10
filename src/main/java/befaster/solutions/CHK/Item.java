@@ -1,15 +1,19 @@
 package befaster.solutions.CHK;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public class Item {
 
     private final String sku;
     private final Integer price;
-    private final Multibuy multibuy;
+    private final List<Multibuy> multibuys;
 
-    public Item(String sku, Integer price, Multibuy multibuy) {
+    public Item(String sku, Integer price, List<Multibuy> multibuys) {
         this.sku = sku;
         this.price = price;
-        this.multibuy = multibuy;
+        this.multibuys = multibuys == null ? Lists.newArrayList() : multibuys;
     }
 
     public String getSku() {
@@ -20,7 +24,8 @@ public class Item {
         return price;
     }
 
-    public Multibuy getMultibuy() {
-        return multibuy;
+    public List<Multibuy> getMultibuys() {
+        return multibuys;
     }
 }
+

@@ -76,7 +76,13 @@ public class CheckoutSolutionTest {
     @Test
     public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
         Integer actual = this.checkoutSolution.checkout("AAAAAAAAAA");
-        Assert.assertEquals(Integer.valueOf(440), actual);
+        Assert.assertEquals(Integer.valueOf(400), actual);
+    }
+
+    @Test
+    public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
+        Integer actual = this.checkoutSolution.checkout("AAAAAAAAAA");
+        Assert.assertEquals(Integer.valueOf(400), actual);
     }
 
     @Test
@@ -84,4 +90,23 @@ public class CheckoutSolutionTest {
         Integer actual = this.checkoutSolution.checkout("BBAD");
         Assert.assertEquals(Integer.valueOf(110), actual);
     }
+
+    @Test
+    private void checkout_shouldCalcualteMultibuyWhichProvideFreeProducts_freeProductNotPresent() {
+        Integer actual = this.checkoutSolution.checkout("EE");
+        Assert.assertEquals(Integer.valueOf(80), actual);
+    }
+
+    @Test
+    private void checkout_shouldCalcualteMultibuyWhichProvideFreeProducts_freeProductPresent() {
+        Integer actual = this.checkoutSolution.checkout("EEB");
+        Assert.assertEquals(Integer.valueOf(80), actual);
+    }
+
+    @Test
+    private void checkout_shouldCalcualteMultibuyWhichProvideFreeProducts_twoProductsFree() {
+        Integer actual = this.checkoutSolution.checkout("EEEEBBB");
+        Assert.assertEquals(Integer.valueOf(190), actual);
+    }
 }
+
