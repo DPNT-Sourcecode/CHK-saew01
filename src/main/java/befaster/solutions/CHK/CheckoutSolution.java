@@ -12,23 +12,7 @@ public class CheckoutSolution {
    private final Map<String, Item> pricingTable;
 
     public CheckoutSolution() {
-        pricingTable = createItems();
-    }
-
-    private Map<String, Item> createItems() {
-        Map<String, Item> itemList = new HashMap<>();
-        itemList.put("A", new Item("A", 50,
-                Lists.newArrayList(new PriceReductionMultibuy(3, 130),
-                        new PriceReductionMultibuy(5, 200))));
-        itemList.put("B", new Item("B", 30,
-                Lists.newArrayList(new PriceReductionMultibuy(2, 45))));
-        itemList.put("C", new Item("C", 20, null));
-        itemList.put("D", new Item("D", 15, null));
-        itemList.put("E", new Item("E", 40,
-                Lists.newArrayList(new FreeItemMultibuy(2, "B"))));
-        itemList.put("F", new Item("F", 10,
-                Lists.newArrayList(new PriceReductionMultibuy(3, 20))));
-        return itemList;
+        pricingTable = PricingData.createItems();
     }
 
     public Integer checkout(String skus) {
@@ -136,3 +120,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
