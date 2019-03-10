@@ -26,6 +26,8 @@ public class CheckoutSolution {
         itemList.put("D", new Item("D", 15, null));
         itemList.put("E", new Item("E", 40,
                 Lists.newArrayList(new FreeItemMultibuy(2, "B"))));
+        itemList.put("F", new Item("F", 10,
+                Lists.newArrayList(new PriceReductionMultibuy(3, 20))));
         return itemList;
     }
 
@@ -134,5 +136,3 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
-
-

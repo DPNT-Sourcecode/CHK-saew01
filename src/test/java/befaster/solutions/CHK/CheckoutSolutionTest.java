@@ -82,7 +82,10 @@ public class CheckoutSolutionTest {
                 new Object[]{"AAAAAAAA", 330}, //8 As
                 new Object[]{"AAAAAAAAA", 380}, //9 As
                 new Object[]{"AAAAAAAAAA", 400}, //10 As
-
+                new Object[]{"FFF", 20},
+                new Object[]{"FFFF", 30},
+                new Object[]{"FFFFF", 40},
+                new Object[]{"FFFFFF", 40}
         };
         for (Object[] input : dataProvider) {
             String skus = (String)input[0];
@@ -92,7 +95,6 @@ public class CheckoutSolutionTest {
         }
 
     }
-
 
     @Test
     public void checkout_shouldCalculateMultibuyWithOtherItemsCorrectly() {
@@ -118,4 +120,3 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(190), actual);
     }
 }
-
