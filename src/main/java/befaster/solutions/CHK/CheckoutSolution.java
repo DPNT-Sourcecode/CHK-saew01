@@ -71,19 +71,23 @@ public class CheckoutSolution {
             if(itemInfo.getMultibuys().size() > 0)
             {
                 Integer requestedItems = itemInBasket.getValue();
+                List<Multibuy> multibuysToCheck = itemInfo.getMultibuys();
 
-                for(Multibuy multibuy : itemInfo.getMultibuys()) {
+                for(Multibuy multibuy : multibuysToCheck) {
 
                 }
             }
         }
     }
 
-    private Optional<Multibuy> getBestApplicablePriceMultibuy(List<Multibuy> multibuyList) {
+    private Optional<PriceReductionMultibuy> getBestApplicablePriceMultibuy(List<Multibuy> multibuyList) {
         Optional<PriceReductionMultibuy> bestMultibuy = Optional.empty();
         for (Multibuy multibuy : multibuyList) {
-            if(!bestMultibuy.isPresent() || bestMultibuy.get().get)
+            if(!bestMultibuy.isPresent() || bestMultibuy.get().getCount() < multibuy.getCount()) {
+                bestMultibuy = Optional.of((PriceReductionMultibuy) multibuy);
+            }
         }
+        return bestMultibuy;
     }
 
     private boolean isMultibuyApplicable(Item itemInfo) {
@@ -109,4 +113,5 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
