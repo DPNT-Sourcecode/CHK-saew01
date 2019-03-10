@@ -3,15 +3,14 @@ package befaster.solutions.CHK;
 import com.google.common.collect.Lists;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PricingData {
 
     protected static Map<String, Item> createItems() {
         Map<String, Item> itemList = new HashMap<>();
-        itemList.put("A", new Item("A", 50,
-                Lists.newArrayList(new PriceReductionMultibuy(3, 130),
-                        new PriceReductionMultibuy(5, 200))));
+        itemList.put("A", new Item("A", 50));
         itemList.put("B", new Item("B", 30,
                 Lists.newArrayList(new PriceReductionMultibuy(2, 45))));
         itemList.put("C", new Item("C", 20, null));
@@ -53,4 +52,12 @@ public class PricingData {
 
         return itemList;
     }
+
+    public List<Multibuy> createMultibuys() {
+        List<Multibuy> multibuys = Lists.newArrayList();
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("A"),3, 130));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("A"),5, 200));
+
+    }
 }
+
