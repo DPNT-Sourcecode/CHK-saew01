@@ -22,9 +22,11 @@ public class CheckoutSolution {
 
     public Integer checkout(String skus) {
         Integer total = 0;
-
+        if(skus.length() == 0) {
+            return 0;
+        }
         try {
-            Map<String, Integer> itemsInBasket = calculateItemRequestSingleItemOnly(skus);
+            Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
@@ -51,26 +53,9 @@ public class CheckoutSolution {
         return itemInfo.getMultibuy() != null && numberOfItemsRequested >= itemInfo.getMultibuy().getCount();
     }
 
-    private Map<String, Integer> calculateItemRequestSingleItemOnly(String sku)
-    {
-        Map<String, Integer> itemTracker = new HashMap<>();
-        if(sku.length() == 1) {
-            if(!pricingTable.containsKey(sku)) {
-                throw new IllegalArgumentException(String.format("Unexpected sku %s", sku));
-            }
-            itemTracker.put(sku, 1);
-
-        }
-        else {
-            throw new IllegalArgumentException(String.format("Unexpected sku %s", sku));
-        }
-        return itemTracker;
-    }
-
-
     private Map<String, Integer> calculateItemsRequested(String skus) {
         Map<String, Integer> itemTracker = new HashMap<>();
-        String[] skuArray = skus.split(",");
+        String[] skuArray = skus.split("");
         for (String sku : skuArray) {
             if(!pricingTable.containsKey(sku)) {
                 throw new IllegalArgumentException(String.format("Unexpected sku %s", sku));
@@ -86,6 +71,7 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
 

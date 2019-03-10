@@ -11,13 +11,30 @@ public class CheckoutSolutionTest {
     public void setUp() {
         checkoutSolution = new CheckoutSolution();
     }
+    @Test
+    public void checkout_noItem() {
+        Integer actual = this.checkoutSolution.checkout("");
+        Assert.assertEquals(Integer.valueOf(0), actual);
 
+    }
     @Test
     public void checkout_singleItem() {
         Integer actual = this.checkoutSolution.checkout("A");
         Assert.assertEquals(Integer.valueOf(50), actual);
-
     }
+
+    @Test
+    public void checkout_comboOfItem() {
+        Integer actual = this.checkoutSolution.checkout("ABCD");
+        Assert.assertEquals(Integer.valueOf(115), actual);
+    }
+
+    @Test
+    public void checkout_badInput() {
+        Integer actual = this.checkoutSolution.checkout("AxA");
+        Assert.assertEquals(Integer.valueOf(-1), actual);
+    }
+
 
     @Test
     public void checkout_singleItem_unknown() {
@@ -34,34 +51,41 @@ public class CheckoutSolutionTest {
 
     @Test
     public void checkout_shouldCalculateBasketCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("A,B,C,D");
+        Integer actual = this.checkoutSolution.checkout("ABCD");
         Assert.assertEquals(Integer.valueOf(115), actual);
     }
 
     @Test
+    public void checkout_shouldCalculateJustShortOfMultibuyCorrectly() {
+        Integer actual = this.checkoutSolution.checkout("AA");
+        Assert.assertEquals(Integer.valueOf(100), actual);
+    }
+
+    @Test
     public void checkout_shouldCalculateMultibuyCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("A,A,A");
+        Integer actual = this.checkoutSolution.checkout("AAA");
         Assert.assertEquals(Integer.valueOf(130), actual);
     }
 
     @Test
     public void checkout_shouldCalculateMultibuyWithSinglesCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("A,A,A,A");
-        Assert.assertEquals(Integer.valueOf(180), actual);
+        Integer actual = this.checkoutSolution.checkout("AAAA");
+        Assert.assertEquals(Integer.valueOf(-1), actual);
     }
 
     @Test
     public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("A,A,A,A,A,A,A,A,A,A");
-        Assert.assertEquals(Integer.valueOf(440), actual);
+        Integer actual = this.checkoutSolution.checkout("AAAAAAAAAA");
+        Assert.assertEquals(Integer.valueOf(-1), actual);
     }
 
     @Test
     public void checkout_shouldCalculateMultibuyWithOtherItemsCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("B,B,A,D");
-        Assert.assertEquals(Integer.valueOf(110), actual);
+        Integer actual = this.checkoutSolution.checkout("BBAD");
+        Assert.assertEquals(Integer.valueOf(-1), actual);
     }
 }
+
 
 
 
