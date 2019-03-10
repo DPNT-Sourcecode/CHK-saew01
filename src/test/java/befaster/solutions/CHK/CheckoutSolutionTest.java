@@ -93,7 +93,7 @@ public class CheckoutSolutionTest {
                 new Object[]{"QQQ", 80},
                 new Object[]{"UUUU", 120},
                 new Object[]{"VV", 90},
-                new Object[]{"VVV", 130},
+                new Object[]{"VVV", 130}
         };
 
         for (Object[] input : dataProvider) {
@@ -112,9 +112,22 @@ public class CheckoutSolutionTest {
 
     @Test
     public void checkout_shouldCalcualteMultibuyWhichProvideFreeProducts_freeProductNotPresent() {
-        Integer actual = this.checkoutSolution.checkout("EE");
-        Assert.assertEquals(Integer.valueOf(80), actual);
-    }
+        //TestNG style dataprovider, but not quite. Not familiar with way to do in junit
+        Object[][] dataProvider = new Object[][] {
+                new Object[]{"EE", 80},
+                new Object[]{"EEB", 80},
+                new Object[]{"EEEEBBB", 190},
+                new Object[]{"NNNM", 120},
+                new Object[]{"RRRQ", 150}
+        };
+
+        for (Object[] input : dataProvider) {
+            String skus = (String)input[0];
+            Integer expected = (Integer)input[1];
+            Integer actual = this.checkoutSolution.checkout(skus);
+            Assert.assertEquals(String.format("Input %s did not recieve expected value", skus) ,expected, actual);
+        }
+}
 
     @Test
     public void checkout_shouldCalcualteMultibuyWhichProvideFreeProducts_freeProductPresent() {
@@ -128,4 +141,5 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(190), actual);
     }
 }
+
 

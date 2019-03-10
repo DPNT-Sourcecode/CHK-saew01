@@ -30,7 +30,7 @@ public class PricingData {
                 Lists.newArrayList(new PriceReductionMultibuy(2, 150))));
         itemList.put("L", new Item("L", 90, null));
         itemList.put("M", new Item("M", 15, null));
-        itemList.put("N", new Item("N", 20,
+        itemList.put("N", new Item("N", 40,
                 Lists.newArrayList(new FreeItemMultibuy(3, "M"))));
         itemList.put("O", new Item("O", 10, null));
         itemList.put("P", new Item("P", 50,
@@ -54,5 +54,6 @@ public class PricingData {
         return itemList;
     }
 }
+
 
 
