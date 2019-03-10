@@ -3,7 +3,9 @@ package befaster.solutions.CHK;
 import com.google.common.collect.Lists;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CheckoutSolution {
 
@@ -15,10 +17,15 @@ public class CheckoutSolution {
 
     private Map<String, Item> createItems() {
         Map<String, Item> itemList = new HashMap<>();
-        itemList.put("A", new Item("A", 50, Lists.newArrayList(new Multibuy(3, 130))));
-        itemList.put("B", new Item("B", 30, Lists.newArrayList(new Multibuy(2, 45))));
+        itemList.put("A", new Item("A", 50,
+                Lists.newArrayList(new PriceReductionMultibuy(3, 130),
+                        new PriceReductionMultibuy(5, 200))));
+        itemList.put("B", new Item("B", 30,
+                Lists.newArrayList(new PriceReductionMultibuy(2, 45))));
         itemList.put("C", new Item("C", 20, null));
         itemList.put("D", new Item("D", 15, null));
+        itemList.put("E", new Item("E", 40,
+                Lists.newArrayList(new FreeItemMultibuy(2, "B"))));
         return itemList;
     }
 
@@ -27,13 +34,20 @@ public class CheckoutSolution {
         if(skus.length() == 0) {
             return 0;
         }
+
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
                 Integer numberOfItemsRequested = itemInBasket.getValue();
-                if(isMultibuyApplicable(itemInfo, numberOfItemsRequested))
+
+                //apply multibuy first, then calculate prices?
+                //can't seperate out as before now
+                applyMultibuys();
+
+
+                if(isMultibuyApplicable(itemInfo))
                 {
                     Integer multiBuyThreshold = itemInfo.getMultibuys().getCount();
                     Integer numberOfMultibuys = numberOfItemsRequested / multiBuyThreshold;
@@ -51,10 +65,30 @@ public class CheckoutSolution {
         }
     }
 
-    private boolean isMultibuyApplicable(Item itemInfo, Integer numberOfItemsRequested) {
+    private void applyMultibuys(Map<String, Integer> itemsInBasket, Integer total) {
+        for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
+            Item itemInfo = pricingTable.get(itemInBasket.getKey());
+            if(itemInfo.getMultibuys().size() > 0)
+            {
+                Integer requestedItems = itemInBasket.getValue();
 
-        return itemInfo.getMultibuys().size() > 0
-                && numberOfItemsRequested >= itemInfo.getMultibuys();
+                for(Multibuy multibuy : itemInfo.getMultibuys()) {
+
+                }
+            }
+        }
+    }
+
+    private Optional<Multibuy> getBestApplicablePriceMultibuy(List<Multibuy> multibuyList) {
+        Optional<PriceReductionMultibuy> bestMultibuy = Optional.empty();
+        for (Multibuy multibuy : multibuyList) {
+            if(!bestMultibuy.isPresent() || bestMultibuy.get().get)
+        }
+    }
+
+    private boolean isMultibuyApplicable(Item itemInfo) {
+
+        return itemInfo.getMultibuys().size() > 0;
     }
 
     private Map<String, Integer> calculateItemsRequested(String skus) {
@@ -75,3 +109,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+

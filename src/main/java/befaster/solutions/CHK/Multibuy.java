@@ -1,20 +1,15 @@
 package befaster.solutions.CHK;
 
-public class Multibuy {
+public abstract class Multibuy {
     private final Integer count;
-    private final Integer price;
 
-    public Multibuy(Integer count, Integer value) {
+    public Multibuy(Integer count) {
         this.count = count;
-        this.price = value;
     }
 
     public Integer getCount() {
         return count;
     }
 
-    public Integer getPrice() {
-        return price;
-    }
-
 }
+
