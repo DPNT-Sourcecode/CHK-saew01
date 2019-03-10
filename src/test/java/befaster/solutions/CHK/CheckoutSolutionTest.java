@@ -75,15 +75,23 @@ public class CheckoutSolutionTest {
 
     @Test
     public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("AAAAAAAAAA");
-        Assert.assertEquals(Integer.valueOf(400), actual);
+
+        //TestNG style dataprovider
+        Object[][] dataProvider = new Object[][] {
+                new Object[]{"AAAAAAAAAA", 400},
+                new Object[]{"AAAAAAAA", 330},
+                new Object[]{"AAAAAAAAA", 380},
+                new Object[]{"AAAAAAAAAA", 390}
+        };
+        for (Object[] input : dataProvider) {
+            String skus = (String)input[0];
+            Integer expected = (Integer)input[1];
+            Integer actual = this.checkoutSolution.checkout(skus);
+            Assert.assertEquals(String.format("Input %s did not recieve expected value", skus) ,expected, actual);
+        }
+
     }
 
-    @Test
-    public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
-        Integer actual = this.checkoutSolution.checkout("AAAAAAAAAA");
-        Assert.assertEquals(Integer.valueOf(400), actual);
-    }
 
     @Test
     public void checkout_shouldCalculateMultibuyWithOtherItemsCorrectly() {
@@ -109,4 +117,5 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(190), actual);
     }
 }
+
 
