@@ -6,14 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CheckoutSolution {
 
    private final Map<String, Item> pricingTable;
-   private final List<String> multibuys;
+   private final List<Multibuy> multibuys;
 
     public CheckoutSolution() {
         pricingTable = PricingData.createItems();
+        multibuys = PricingData.createMultibuys();
     }
 
     public Integer checkout(String skus) {
@@ -43,28 +45,34 @@ public class CheckoutSolution {
         Integer total = 0;
         for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
             Item itemInfo = pricingTable.get(itemInBasket.getKey());
-            if(itemInfo.getMultibuys().size() > 0)
+            List<Multibuy> applicableMultibuys = multibuys.stream()
+                    .filter(multibuy -> multibuy.getSkusForMultibuy().contains(itemInfo.getSku()))
+                    .collect(Collectors.toList());
+            if(applicableMultibuys.size() > 0)
             {
-                applyFreeItemMultibuy(itemInBasket, itemInfo, itemsInBasket);
+                applyFreeItemMultibuy(itemInBasket, applicableMultibuys, itemsInBasket);
             }
         }
 
         for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
             Item itemInfo = pricingTable.get(itemInBasket.getKey());
-            if(itemInfo.getMultibuys().size() > 0)
+            List<Multibuy> applicableMultibuys = multibuys.stream()
+                    .filter(multibuy -> multibuy.getSkusForMultibuy().contains(itemInfo.getSku()))
+                    .collect(Collectors.toList());
+            if(applicableMultibuys.size() > 0)
             {
-                total = applyPriceMultibuy(total, itemInBasket, itemInfo);
+                total = applyPriceMultibuy(total, itemInBasket, applicableMultibuys);
             }
         }
 
         return total;
     }
 
-    private void applyFreeItemMultibuy(Map.Entry<String, Integer> itemInBasket, Item itemInfo, Map<String, Integer> itemsInBasket) {
+    private void applyFreeItemMultibuy(Map.Entry<String, Integer> itemInBasket, List<Multibuy> applicableMultibuys, Map<String, Integer> itemsInBasket) {
         Integer requestedItems = itemInBasket.getValue();
 
-        if(itemInfo.getMultibuys().get(0) instanceof  FreeItemMultibuy) {
-            FreeItemMultibuy multibuy =  (FreeItemMultibuy)itemInfo.getMultibuys().get(0);
+        if(applicableMultibuys.get(0) instanceof  FreeItemMultibuy) {
+            FreeItemMultibuy multibuy =  (FreeItemMultibuy)applicableMultibuys.get(0);
             while(requestedItems >= multibuy.getCount()) {
                 requestedItems -= multibuy.getCount();
                 Integer currentValueInBasket = itemsInBasket.get(multibuy.getSku());
@@ -76,17 +84,16 @@ public class CheckoutSolution {
 
     }
 
-    private Integer applyPriceMultibuy(Integer total, Map.Entry<String, Integer> itemInBasket, Item itemInfo) {
+    private Integer applyPriceMultibuy(Integer total, Map.Entry<String, Integer> itemInBasket, List<Multibuy> applicableMultibuys) {
         Integer requestedItems = itemInBasket.getValue();
-        List<Multibuy> multibuysToCheck = itemInfo.getMultibuys();
 
         Optional<PriceReductionMultibuy> priceReductionMultibuy =
-                getBestApplicablePriceMultibuy(multibuysToCheck, requestedItems);
+                getBestApplicablePriceMultibuy(applicableMultibuys, requestedItems);
         while(priceReductionMultibuy.isPresent()) {
             requestedItems -= priceReductionMultibuy.get().getCount();
             itemInBasket.setValue(requestedItems);
             total += priceReductionMultibuy.get().getPrice();
-            priceReductionMultibuy = getBestApplicablePriceMultibuy(multibuysToCheck, requestedItems);
+            priceReductionMultibuy = getBestApplicablePriceMultibuy(applicableMultibuys, requestedItems);
         }
         return total;
     }
@@ -121,4 +128,5 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 

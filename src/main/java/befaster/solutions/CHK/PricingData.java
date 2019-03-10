@@ -1,7 +1,6 @@
 package befaster.solutions.CHK;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,27 +40,28 @@ public class PricingData {
         return itemList;
     }
 
-    public Map<List<String>, Multibuy> createMultibuys() {
-        Map<List<String>, Multibuy> multibuys = Maps.newHashMap();
+    public static List<Multibuy> createMultibuys() {
+        List<Multibuy> multibuys = Lists.newArrayList();
         List<String> commonMultiBuySkus = Lists.newArrayList("S", "T", "X", "Y", "Z");
-        multibuys.put(Lists.newArrayList("A"), new PriceReductionMultibuy(3, 130));
-        multibuys.put(Lists.newArrayList("A"), new PriceReductionMultibuy(,5, 200));
-        multibuys.put(Lists.newArrayList("B"),new PriceReductionMultibuy(2, 45));
-        multibuys.put(Lists.newArrayList("E"),new FreeItemMultibuy(2, "B"));
-        multibuys.put(Lists.newArrayList("F"),new PriceReductionMultibuy(3, 20));
-        multibuys.put(Lists.newArrayList("H"),new PriceReductionMultibuy(5, 45));
-        multibuys.put(Lists.newArrayList("H"),new PriceReductionMultibuy(10, 80));
-        multibuys.put(Lists.newArrayList("K"),new PriceReductionMultibuy(2, 120));
-        multibuys.put(Lists.newArrayList("N"),new FreeItemMultibuy(3, "M"));
-        multibuys.put(Lists.newArrayList("P"),new PriceReductionMultibuy(5, 200));
-        multibuys.put(Lists.newArrayList("Q"),new PriceReductionMultibuy(3, 80));
-        multibuys.put(Lists.newArrayList("R"),new FreeItemMultibuy(5, "Q"));
-        multibuys.put(commonMultiBuySkus, new PriceReductionMultibuy(3, 45));
-        multibuys.put(Lists.newArrayList("U"),new PriceReductionMultibuy(4, 120));
-        multibuys.put(Lists.newArrayList("V"),new PriceReductionMultibuy(2, 90));
-        multibuys.put(Lists.newArrayList("V"),new PriceReductionMultibuy(3, 130));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("A"),3, 130));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("A"),5, 200));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("B"),2, 45));
+        multibuys.add(new FreeItemMultibuy(Lists.newArrayList("E"),2, "B"));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("F"),3, 20));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("H"),5, 45));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("H"),10, 80));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("K"),2, 120));
+        multibuys.add(new FreeItemMultibuy(Lists.newArrayList("N"),3, "M"));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("P"),5, 200));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("Q"),3, 80));
+        multibuys.add(new FreeItemMultibuy(Lists.newArrayList("R"),5, "Q"));
+        multibuys.add(new PriceReductionMultibuy(commonMultiBuySkus,3, 45));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("U"),4, 120));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("V"),2, 90));
+        multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("V"),3, 130));
         return multibuys;
     }
 }
+
 
 
