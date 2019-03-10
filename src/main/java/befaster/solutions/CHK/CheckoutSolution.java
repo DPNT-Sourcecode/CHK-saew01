@@ -58,10 +58,18 @@ public class CheckoutSolution {
             Item itemInfo = pricingTable.get(itemInBasket.getKey());
             if(itemInfo.getMultibuys().size() > 0)
             {
-                total = applyPriceMultibuy(total, itemInBasket, itemInfo);
                 applyFreeItemMultibuy(itemInBasket, itemInfo, itemsInBasket);
             }
         }
+
+        for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
+            Item itemInfo = pricingTable.get(itemInBasket.getKey());
+            if(itemInfo.getMultibuys().size() > 0)
+            {
+                total = applyPriceMultibuy(total, itemInBasket, itemInfo);
+            }
+        }
+
         return total;
     }
 
@@ -73,7 +81,7 @@ public class CheckoutSolution {
             while(requestedItems >= multibuy.getCount()) {
                 requestedItems -= multibuy.getCount();
                 Integer currentValueInBasket = itemsInBasket.get(multibuy.getSku());
-                if(itemsInBasket.containsKey(multibuy.getSku())) {
+                if(itemsInBasket.containsKey(multibuy.getSku()) && currentValueInBasket > 0) {
                     itemsInBasket.put(multibuy.getSku(), currentValueInBasket - 1);
                 }
             }
@@ -108,11 +116,6 @@ public class CheckoutSolution {
         return bestMultibuy;
     }
 
-    private boolean isMultibuyApplicable(Item itemInfo) {
-
-        return itemInfo.getMultibuys().size() > 0;
-    }
-
     private Map<String, Integer> calculateItemsRequested(String skus) {
         Map<String, Integer> itemTracker = new HashMap<>();
         String[] skuArray = skus.split("");
@@ -131,4 +134,5 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
