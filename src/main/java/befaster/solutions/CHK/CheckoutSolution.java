@@ -75,13 +75,18 @@ public class CheckoutSolution {
                 )
                 .collect(Collectors.toList());
 
-       Integer numberOfRequestedItems = items.size();
+       Integer numberOfRequestedItems = calculateItemCountForGroupMultibuy();
+
        Integer total = 0;
        while(numberOfRequestedItems >= applicableMultibuy.getCount()) {
            //find x most expensive items
            final List<Item> expensiveItems = Lists.newArrayList();
            for (Integer i = 0; i < applicableMultibuy.getCount(); i++) {
+               if(itemsInBasket.get(items.get(0).getSku()).equals(1)) {
                    expensiveItems.add(items.remove(0));
+               } else {
+                   expensiveItems.add(items.remove(0));
+               }
            }
 
            total += applicableMultibuy.getPrice();
@@ -94,6 +99,16 @@ public class CheckoutSolution {
 
        return total;
 
+    }
+
+    private Integer calculateItemCountForGroupMultibuy(Map<String, Integer> itemsInBasket, PriceReductionMultibuy multibuy) {
+        Integer count = 0;
+        Set<String> multibuy.get
+        itemsInBasket.entrySet().forEach(entry -> {
+            if(multibuy.getSkusForMultibuy().containsKey(entry.getKey())) {
+
+            }
+        });
     }
 
     private Integer applyMultibuys(Map<String, Integer> itemsInBasket) {
@@ -183,6 +198,3 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
-
-
-
