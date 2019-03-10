@@ -38,25 +38,13 @@ public class CheckoutSolution {
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
+            applyMultibuys(itemsInBasket, total);
+
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
                 Integer numberOfItemsRequested = itemInBasket.getValue();
 
-                //apply multibuy first, then calculate prices?
-                //can't seperate out as before now
-                applyMultibuys();
-
-
-                if(isMultibuyApplicable(itemInfo))
-                {
-                    Integer multiBuyThreshold = itemInfo.getMultibuys().getCount();
-                    Integer numberOfMultibuys = numberOfItemsRequested / multiBuyThreshold;
-                    Integer remainderFromMultibuys = numberOfItemsRequested % multiBuyThreshold;
-                    total += itemInfo.getMultibuys().getPrice() * numberOfMultibuys;
-                    total += itemInfo.getPrice() * remainderFromMultibuys;
-                } else {
-                    total += itemInfo.getPrice() * numberOfItemsRequested;
-                }
+                total += itemInfo.getPrice() * numberOfItemsRequested;
             }
             return total;
         } catch(IllegalArgumentException e) {
@@ -70,12 +58,38 @@ public class CheckoutSolution {
             Item itemInfo = pricingTable.get(itemInBasket.getKey());
             if(itemInfo.getMultibuys().size() > 0)
             {
-                Integer requestedItems = itemInBasket.getValue();
-                List<Multibuy> multibuysToCheck = itemInfo.getMultibuys();
-
-                
+                total = applyPriceMultibuy(total, itemInBasket, itemInfo);
+                applyFreeItemMultibuy(itemInBasket, itemInfo, itemsInBasket);
             }
         }
+    }
+
+    private void applyFreeItemMultibuy(Map.Entry<String, Integer> itemInBasket, Item itemInfo, Map<String, Integer> itemsInBasket) {
+        Integer requestedItems = itemInBasket.getValue();
+
+        if(itemInfo.getMultibuys().get(0) instanceof  FreeItemMultibuy) {
+            FreeItemMultibuy multibuy =  (FreeItemMultibuy)itemInfo.getMultibuys().get(0);
+            while(multibuy.getCount() >= requestedItems) {
+                requestedItems -= multibuy.getCount();
+                Integer currentValueInBasket = itemsInBasket.get(multibuy.getSku());
+                itemsInBasket.put(multibuy.getSku(), currentValueInBasket - 1);
+            }
+        }
+
+    }
+
+    private Integer applyPriceMultibuy(Integer total, Map.Entry<String, Integer> itemInBasket, Item itemInfo) {
+        Integer requestedItems = itemInBasket.getValue();
+        List<Multibuy> multibuysToCheck = itemInfo.getMultibuys();
+
+        Optional<PriceReductionMultibuy> priceReductionMultibuy =
+                getBestApplicablePriceMultibuy(multibuysToCheck, requestedItems);
+        while(priceReductionMultibuy.isPresent()) {
+            requestedItems -= priceReductionMultibuy.get().getCount();
+            total += priceReductionMultibuy.get().getPrice();
+            priceReductionMultibuy = getBestApplicablePriceMultibuy(multibuysToCheck, requestedItems);
+        }
+        return total;
     }
 
     private Optional<PriceReductionMultibuy> getBestApplicablePriceMultibuy(List<Multibuy> multibuyList, Integer requestedNumber) {
@@ -112,6 +126,7 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
 
