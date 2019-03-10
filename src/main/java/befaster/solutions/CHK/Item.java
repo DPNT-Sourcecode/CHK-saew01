@@ -2,12 +2,14 @@ package befaster.solutions.CHK;
 
 public class Item {
 
-    private String sku;
-    private Integer price;
+    private final String sku;
+    private final Integer price;
+    private final Multibuy multibuy;
 
-    public Item(String sku, Integer price) {
+    public Item(String sku, Integer price, Multibuy multibuy) {
         this.sku = sku;
         this.price = price;
+        this.multibuy = multibuy;
     }
 
     public String getSku() {
@@ -17,4 +19,9 @@ public class Item {
     public Integer getPrice() {
         return price;
     }
+
+    public Multibuy getMultibuy() {
+        return multibuy;
+    }
 }
+

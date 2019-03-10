@@ -1,12 +1,7 @@
 package befaster.solutions.CHK;
 
-import befaster.runner.SolutionNotImplementedException;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CheckoutSolution {
 
@@ -18,10 +13,10 @@ public class CheckoutSolution {
 
     private Map<String, Item> createItems() {
         Map<String, Item> itemList = new HashMap<>();
-        itemList.put("A", new Item("A", 50));
-        itemList.put("B", new Item("B", 30));
-        itemList.put("C", new Item("C", 20));
-        itemList.put("D", new Item("D", 15));
+        itemList.put("A", new Item("A", 50, new Multibuy(3, 130)));
+        itemList.put("B", new Item("B", 30, new Multibuy(2, 45)));
+        itemList.put("C", new Item("C", 20, null));
+        itemList.put("D", new Item("D", 15, null));
         return itemList;
     }
 
@@ -31,17 +26,29 @@ public class CheckoutSolution {
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
-            //Do multi pricing bit here, will keep simple for now
-            //Do normal pricing first
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
-                total += itemInfo.getPrice() * itemInBasket.getValue();
+                Integer numberOfItemsRequested = itemInBasket.getValue();
+                if(isMultibuyApplicable(itemInfo, numberOfItemsRequested))
+                {
+                    Integer multiBuyThreshold = itemInfo.getMultibuy().getCount();
+                    Integer numberOfMultibuys = numberOfItemsRequested / multiBuyThreshold;
+                    Integer remainderFromMultibuys = numberOfItemsRequested % multiBuyThreshold;
+                    total += itemInfo.getMultibuy().getPrice() * numberOfMultibuys;
+                    total += itemInfo.getPrice() * remainderFromMultibuys;
+                } else {
+                    total += itemInfo.getPrice() * numberOfItemsRequested;
+                }
             }
             return total;
         } catch(IllegalArgumentException e) {
             //Return -1 for unknown skus
             return -1;
         }
+    }
+
+    private boolean isMultibuyApplicable(Item itemInfo, Integer numberOfItemsRequested) {
+        return itemInfo.getMultibuy() != null && numberOfItemsRequested >= itemInfo.getMultibuy().getCount();
     }
 
     private  Map<String, Integer> calculateItemsRequested(String skus) {
@@ -62,3 +69,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+

@@ -37,8 +37,15 @@ public class CheckoutSolutionTest {
     }
 
     @Test
+    public void checkout_shouldCalculateMultipleMultibuysCorrectly() {
+        Integer actual = this.checkoutSolution.checkout("A,A,A,A,A,A,A,A,A,A");
+        Assert.assertEquals(Integer.valueOf(440), actual);
+    }
+
+    @Test
     public void checkout_shouldCalculateMultibuyWithOtherItemsCorrectly() {
         Integer actual = this.checkoutSolution.checkout("B,B,A,D");
         Assert.assertEquals(Integer.valueOf(110), actual);
     }
 }
+
