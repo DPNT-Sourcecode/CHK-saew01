@@ -56,10 +56,12 @@ public class CheckoutSolution {
         Map<String, Integer> itemTracker = new HashMap<>();
         if(sku.length() == 1) {
             itemTracker.put(sku, 1);
+
         }
         else {
             throw new IllegalArgumentException(String.format("Unexpected sku %s", sku));
         }
+        return itemTracker;
     }
 
 
@@ -81,6 +83,7 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
 
