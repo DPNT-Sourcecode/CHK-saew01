@@ -13,6 +13,13 @@ public class CheckoutSolutionTest {
     }
 
     @Test
+    public void checkout_singleItem() {
+        Integer actual = this.checkoutSolution.checkout("A");
+        Assert.assertEquals(Integer.valueOf(50), actual);
+
+    }
+
+    @Test
     public void checkout_shouldReturnNegativeOneOnIllegalValues() {
         Integer actual = this.checkoutSolution.checkout("This is in valid");
         Assert.assertEquals("Expected -1 to be the result on illegal input", Integer.valueOf(-1), actual);
@@ -48,4 +55,5 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(110), actual);
     }
 }
+
 

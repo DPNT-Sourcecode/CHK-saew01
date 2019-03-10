@@ -51,7 +51,7 @@ public class CheckoutSolution {
         return itemInfo.getMultibuy() != null && numberOfItemsRequested >= itemInfo.getMultibuy().getCount();
     }
 
-    private  Map<String, Integer> calculateItemsRequested(String skus) {
+    private Map<String, Integer> calculateItemsRequested(String skus) {
         Map<String, Integer> itemTracker = new HashMap<>();
         String[] skuArray = skus.split(",");
         for (String sku : skuArray) {
@@ -69,4 +69,5 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
