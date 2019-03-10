@@ -67,9 +67,9 @@ public class CheckoutSolution {
                             if (o1.getPrice().equals(o2.getPrice())) {
                                 return 0;
                             } else if (o1.getPrice() > o2.getPrice()) {
-                                return 1;
-                            } else {
                                 return -1;
+                            } else {
+                                return 1;
                             }
                         }
                 )
@@ -183,5 +183,6 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
