@@ -78,10 +78,11 @@ public class CheckoutSolutionTest {
 
         //TestNG style dataprovider
         Object[][] dataProvider = new Object[][] {
-                new Object[]{"AAAAAAAAAA", 400},
-                new Object[]{"AAAAAAAA", 330},
-                new Object[]{"AAAAAAAAA", 380},
-                new Object[]{"AAAAAAAAAA", 390}
+                new Object[]{"AAAAAAA", 300}, //7 As
+                new Object[]{"AAAAAAAA", 330}, //8 As
+                new Object[]{"AAAAAAAAA", 380}, //9 As
+                new Object[]{"AAAAAAAAAA", 400}, //10 As
+
         };
         for (Object[] input : dataProvider) {
             String skus = (String)input[0];
@@ -117,3 +118,4 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(190), actual);
     }
 }
+
