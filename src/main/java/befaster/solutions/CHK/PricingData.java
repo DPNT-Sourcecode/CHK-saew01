@@ -54,6 +54,3 @@ public class PricingData {
         return itemList;
     }
 }
-
-
-
