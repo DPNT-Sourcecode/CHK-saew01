@@ -146,4 +146,11 @@ public class CheckoutSolutionTest {
         Integer actual = this.checkoutSolution.checkout("SSTXYZZY");
         Assert.assertEquals(Integer.valueOf(127), actual);
     }
+
+    @Test
+    public void checkout_multipleDifferentProductsMultibuy_withOtherMultibuy() {
+        Integer actual = this.checkoutSolution.checkout("SSTXYZZYQQQCD");
+        Assert.assertEquals(Integer.valueOf(242), actual);
+    }
 }
+
