@@ -88,7 +88,7 @@ public class CheckoutSolutionTest {
                 new Object[]{"FFFFFF", 40},
                 new Object[]{"HHHHH", 45},
                 new Object[]{"HHHHHHHHHH", 80},
-                new Object[]{"KK", 150},
+                new Object[]{"KK", 120},
                 new Object[]{"PPPPP", 200},
                 new Object[]{"QQQ", 80},
                 new Object[]{"UUUU", 120},
@@ -125,7 +125,7 @@ public class CheckoutSolutionTest {
             String skus = (String)input[0];
             Integer expected = (Integer)input[1];
             Integer actual = this.checkoutSolution.checkout(skus);
-            Assert.assertEquals(String.format("Input %s did not recieve expected value", skus) ,expected, actual);
+            Assert.assertEquals(String.format("Input %s did not receive expected value", skus) ,expected, actual);
         }
 }
 
@@ -147,4 +147,3 @@ public class CheckoutSolutionTest {
         Assert.assertEquals(Integer.valueOf(127), actual);
     }
 }
-

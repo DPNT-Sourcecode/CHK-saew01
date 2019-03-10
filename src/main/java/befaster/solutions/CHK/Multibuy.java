@@ -20,6 +20,3 @@ public abstract class Multibuy {
     }
 
 }
-
-
-

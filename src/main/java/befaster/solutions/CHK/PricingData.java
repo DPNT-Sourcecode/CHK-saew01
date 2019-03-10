@@ -54,7 +54,7 @@ public class PricingData {
         multibuys.add(new FreeItemMultibuy(Lists.newArrayList("N"),3, "M"));
         multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("P"),5, 200));
         multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("Q"),3, 80));
-        multibuys.add(new FreeItemMultibuy(Lists.newArrayList("R"),5, "Q"));
+        multibuys.add(new FreeItemMultibuy(Lists.newArrayList("R"),3, "Q"));
         multibuys.add(new PriceReductionMultibuy(commonMultiBuySkus,3, 45));
         multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("U"),4, 120));
         multibuys.add(new PriceReductionMultibuy(Lists.newArrayList("V"),2, 90));
@@ -62,6 +62,3 @@ public class PricingData {
         return multibuys;
     }
 }
-
-
-

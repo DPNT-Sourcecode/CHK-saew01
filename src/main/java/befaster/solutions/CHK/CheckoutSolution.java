@@ -41,6 +41,8 @@ public class CheckoutSolution {
         }
     }
 
+    private Integer applyGroupMultibuy()
+
     private Integer applyMultibuys(Map<String, Integer> itemsInBasket) {
         Integer total = 0;
         for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
@@ -128,5 +130,3 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
-
-

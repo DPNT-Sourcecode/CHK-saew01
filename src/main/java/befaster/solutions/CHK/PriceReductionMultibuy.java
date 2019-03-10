@@ -15,6 +15,3 @@ public class PriceReductionMultibuy extends Multibuy {
     }
 
 }
-
-
-
