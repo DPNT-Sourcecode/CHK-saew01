@@ -41,7 +41,30 @@ public class CheckoutSolution {
         }
     }
 
-    private Integer applyGroupMultibuy()
+    private Integer applyGroupMultibuy(Map<String, Integer> itemsInBasket) {
+        Integer total = 0;
+
+        for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
+            Item itemInfo = pricingTable.get(itemInBasket.getKey());
+            Optional<Multibuy> applicableMultibuy = multibuys.stream()
+                    .filter(multibuy -> multibuy.getSkusForMultibuy().contains(itemInfo.getSku())
+                        && multibuy.getSkusForMultibuy().size() > 1)
+                    .findFirst();
+            if(applicableMultibuy.isPresent())
+            {
+                total = checkGroupMultibuy(itemInBasket, applicableMultibuy, itemsInBasket);
+            }
+        }
+        return total;
+    }
+
+    private Integer checkGroupMultibuy(Map.Entry<String, Integer> itemInBasket, Multibuy applicableMultibuys, Map<String, Integer> itemsInBasket) {
+
+        List<Item> items = itemsInBasket.entrySet().stream()
+                .filter(entry -> applicableMultibuys.getSkusForMultibuy().contains(entry.getKey())).map
+                .collect(Collectors.toList())
+
+    }
 
     private Integer applyMultibuys(Map<String, Integer> itemsInBasket) {
         Integer total = 0;
@@ -130,3 +153,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
