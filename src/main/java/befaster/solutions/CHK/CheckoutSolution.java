@@ -38,7 +38,7 @@ public class CheckoutSolution {
         try {
             Map<String, Integer> itemsInBasket = calculateItemsRequested(skus);
 
-            applyMultibuys(itemsInBasket, total);
+            total = applyMultibuys(itemsInBasket);
 
             for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
                 Item itemInfo = pricingTable.get(itemInBasket.getKey());
@@ -53,7 +53,8 @@ public class CheckoutSolution {
         }
     }
 
-    private void applyMultibuys(Map<String, Integer> itemsInBasket, Integer total) {
+    private Integer applyMultibuys(Map<String, Integer> itemsInBasket) {
+        Integer total = 0;
         for (Map.Entry<String, Integer> itemInBasket : itemsInBasket.entrySet()) {
             Item itemInfo = pricingTable.get(itemInBasket.getKey());
             if(itemInfo.getMultibuys().size() > 0)
@@ -62,6 +63,7 @@ public class CheckoutSolution {
                 applyFreeItemMultibuy(itemInBasket, itemInfo, itemsInBasket);
             }
         }
+        return total;
     }
 
     private void applyFreeItemMultibuy(Map.Entry<String, Integer> itemInBasket, Item itemInfo, Map<String, Integer> itemsInBasket) {
@@ -95,7 +97,7 @@ public class CheckoutSolution {
     private Optional<PriceReductionMultibuy> getBestApplicablePriceMultibuy(List<Multibuy> multibuyList, Integer requestedNumber) {
         Optional<PriceReductionMultibuy> bestMultibuy = Optional.empty();
         for (Multibuy multibuy : multibuyList) {
-            if( multibuy.getCount() >= requestedNumber && (!bestMultibuy.isPresent()
+            if( requestedNumber >= multibuy.getCount() && (!bestMultibuy.isPresent()
                     || bestMultibuy.get().getCount() < multibuy.getCount())) {
                 bestMultibuy = Optional.of((PriceReductionMultibuy) multibuy);
             }
@@ -126,6 +128,7 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
 
 
 
