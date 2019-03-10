@@ -1,6 +1,7 @@
 package befaster.solutions.CHK;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class CheckoutSolution {
                 )
                 .collect(Collectors.toList());
 
-       Integer numberOfRequestedItems = calculateItemCountForGroupMultibuy();
+       Integer numberOfRequestedItems = calculateItemCountForGroupMultibuy(itemsInBasket, applicableMultibuy);
 
        Integer total = 0;
        while(numberOfRequestedItems >= applicableMultibuy.getCount()) {
@@ -94,7 +95,7 @@ public class CheckoutSolution {
                Integer numberInBasket = itemsInBasket.get(expensiveItem.getSku());
                itemsInBasket.put(expensiveItem.getSku(), numberInBasket -1);
            }
-           numberOfRequestedItems = items.size();
+           numberOfRequestedItems -=  applicableMultibuy.getCount();
        }
 
        return total;
@@ -103,12 +104,12 @@ public class CheckoutSolution {
 
     private Integer calculateItemCountForGroupMultibuy(Map<String, Integer> itemsInBasket, PriceReductionMultibuy multibuy) {
         Integer count = 0;
-        Set<String> multibuy.get
-        itemsInBasket.entrySet().forEach(entry -> {
-            if(multibuy.getSkusForMultibuy().containsKey(entry.getKey())) {
-
+        for (Map.Entry<String, Integer> entry : itemsInBasket.entrySet()) {
+            if(multibuy.getSkusForMultibuy().contains(entry.getKey())) {
+                count += entry.getValue();
             }
-        });
+        }
+        return count;
     }
 
     private Integer applyMultibuys(Map<String, Integer> itemsInBasket) {
@@ -198,3 +199,4 @@ public class CheckoutSolution {
         return  itemTracker;
     }
 }
+
